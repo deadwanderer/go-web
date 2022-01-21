@@ -28,6 +28,15 @@ func p(a ...interface{}) {
 	fmt.Println(a)
 }
 
+func init() {
+	loadConfig()
+	file, err := os.OpenFile("chitchat.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err != nil {
+		log.Fatalln("Failed to open log file", err)
+	}
+	logger = log.New(file, "INFO ", log.Ldate|log.Ltime|log.Lshortfile)
+}
+
 func loadConfig() {
 	file, err := os.Open("config.json")
 	if err != nil {
@@ -53,7 +62,7 @@ func session(writer http.ResponseWriter, request *http.Request) (sess data.Sessi
 	if err == nil {
 		sess = data.Session{Uuid: cookie.Value}
 		if ok, _ := sess.Check(); !ok {
-			err = errors.New("Invalid session")
+			err = errors.New("invalid session")
 		}
 	}
 	return

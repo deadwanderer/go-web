@@ -1,4 +1,4 @@
-module github.com/deadwanderer/chitchat
+module github.com/deadwanderer/go-web/chitchat
 
 go 1.16
 
